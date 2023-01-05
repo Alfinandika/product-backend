@@ -1,0 +1,22 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:10.6
+    container_name: erajaya
+    volumes:
+      - ./schema:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=unicorn_user
+      - POSTGRES_PASSWORD=magical_password
+      - POSTGRES_DB=erajaya-database
+    tty: true
+  redis_cluster: # Mimic ElastiCache with Redis Cluster Mode On
+    image: grokzen/redis-cluster:latest
+    container_name: erajaya-redis_cluster
+    environment:
+      - IP=0.0.0.0
+    ports:
+      - "8000-8005:8000-8005"
+    restart: unless-stopped
